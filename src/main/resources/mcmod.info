@@ -1,0 +1,16 @@
+[
+  {
+    "modid": "random_fov",
+    "name": "RandomFOVChanger",
+    "description": "Changes your FOV every minute!",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "https://github.com/wowkster/RandomFOVChanger",
+    "updateUrl": "",
+    "authorList": ["Wowkster"],
+    "credits": "Fiizy",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
+]
