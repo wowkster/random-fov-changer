@@ -2,7 +2,7 @@ plugins {
     id "net.minecraftforge.gradle.forge" version "6f53277"
 }
 
-version = "0.0.1"
+version = "0.0.2"
 group = "com.wowkster.randomfov"
 archivesBaseName = "RandomFOVChanger"
 

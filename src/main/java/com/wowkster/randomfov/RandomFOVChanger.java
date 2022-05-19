@@ -28,7 +28,7 @@ import java.util.List;
 public class RandomFOVChanger {
     public static final String MODID = "random_fov";
     public static final String MOD_NAME = "RandomFOVChanger";
-    public static final String VERSION = "0.0.1";
+    public static final String VERSION = "0.0.2";
 
     public static List<KeyBinding> keyBindings;
 
@@ -40,6 +40,9 @@ public class RandomFOVChanger {
     private boolean enabled = false;
     private boolean paused = false;
     private boolean showedMessage = false;
+
+    public static int minFOV = 30;
+    public static int maxFOV = 110;
 
     private final Timer timer;
 
@@ -142,12 +145,11 @@ public class RandomFOVChanger {
     }
 
     public void showRandomizingMessage() {
-        if (!showDebugMessages) return;
         Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new ChatComponentText("§cR§6a§en§ad§bo§dm§ci§6z§ei§an§bg §fFOV!"));
     }
 
     public void randomizeResourcePack() {
-        float random = (int) (Math.random() * 80 + 30);
+        float random = (int) (Math.random() * (maxFOV - minFOV)) + minFOV;
 
         Minecraft.getMinecraft().gameSettings.fovSetting = random;
 

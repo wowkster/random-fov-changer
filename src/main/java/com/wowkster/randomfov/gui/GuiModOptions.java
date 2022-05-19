@@ -1,7 +1,9 @@
 package com.wowkster.randomfov.gui;
 
 import com.wowkster.randomfov.RandomFOVChanger;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.util.ChatComponentText;
 
 public class GuiModOptions extends GuiScreen {
     public static final GuiSlider.GuiDisplaySupplier timeSupplier = (value) -> {
@@ -23,8 +25,14 @@ public class GuiModOptions extends GuiScreen {
         return res;
     };
 
-    public GuiModOptions() {
+    public static final GuiSlider.GuiDisplaySupplier percentSupplier = (value) -> String.format("%d", (int) value);
 
+    private final int previousMin;
+    private final int previousMax;
+
+    public GuiModOptions() {
+        this.previousMin = RandomFOVChanger.minFOV;
+        this.previousMax = RandomFOVChanger.maxFOV;
     }
 
     @Override
@@ -46,6 +54,12 @@ public class GuiModOptions extends GuiScreen {
 
         this.buttonList.add(new GuiToggle(1, "Show Debug Messages", this.width / 2 + 5, this.height / 6 + (24 * 3), RandomFOVChanger.showDebugMessages,
                 (state) -> state ? "§aON" : "§cOFF", (state) -> RandomFOVChanger.showDebugMessages = state));
+
+        this.buttonList.add(new GuiSlider(0, "Min FOV", this.width / 2 - 155, this.height / 6 + (24 * 5), RandomFOVChanger.minFOV, 30, 110, 1,
+                percentSupplier, sliderValue -> RandomFOVChanger.minFOV = (int) sliderValue));
+
+        this.buttonList.add(new GuiSlider(0, "Max FOV", this.width / 2 + 5, this.height / 6 + (24 * 5), RandomFOVChanger.maxFOV, 30, 110, 1,
+                percentSupplier, sliderValue -> RandomFOVChanger.maxFOV = (int) sliderValue));
     }
 
     @Override
@@ -62,11 +76,10 @@ public class GuiModOptions extends GuiScreen {
     public void onGuiClosed() {
         super.onGuiClosed();
 
-//        Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new ChatComponentText(
-//                String.format("§bMaximum CPS Set\n§7Left: %s\n§7Right: %s", displaySupplier.getDisplayString(RandomTextureChanger.leftCpsMax), displaySupplier.getDisplayString(RandomTextureChanger.rightCpsMax))
-//        ));
-//        Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new ChatComponentText(
-//                "§c[WARNING] §eThis mod has not been paid for! §7To remove this message contact §bWowkster#0001 §7for a licensed copy."
-//        ));
+        if (RandomFOVChanger.minFOV > RandomFOVChanger.maxFOV) {
+            Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new ChatComponentText("§cError! You can not set the minimum FOV below the maximum FOV or visa-versa. Changes reverted."));
+            RandomFOVChanger.minFOV = previousMin;
+            RandomFOVChanger.maxFOV = previousMax;
+        }
     }
 }
